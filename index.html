@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>강남세움센터 손발구분 평가도구</title>
+<style>
+  body { font-family: Arial, sans-serif; }
+  .container { max-width: 800px; margin: auto; padding: 20px; text-align: center; }
+  .icon-container { display: flex; justify-content: space-between; margin-top: 20px; }
+  .icon { font-size: 80px; opacity: 0.3; transition: opacity 0.3s; }
+  .active { opacity: 1; }
+  .slider-container, .pattern-container, .controls { margin-bottom: 20px; }
+  .pattern-container select { width: 100px; padding: 5px; margin: 0 5px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>강남세움센터 손 발 구분 평가도구
+  
+  </h1>
+
+  <!-- RPM Control -->
+  <div class="slider-container">
+    <label for="rpmSlider">RPM: <span id="rpmValue">60</span></label>
+    <input type="range" id="rpmSlider" min="30" max="240" value="60">
+  </div>
+
+  <!-- Play/Stop Button -->
+  <div class="controls">
+    <button id="playButton">시작</button>
+  </div>
+
+  <!-- Pattern Setup -->
+  <div class="pattern-container">
+    <h2>패턴 설정:</h2>
+    <select class="pattern-select">
+      <option value="clap">손벽 1번</option>
+      <option value="clap2">손벽 2번</option>
+      <option value="stomp">발구르기 1번</option>
+      <option value="stomp2">발구르기 2번</option>
+    </select>
+    <select class="pattern-select">
+      <option value="clap">손벽 1번</option>
+      <option value="clap2">손벽 2번</option>
+      <option value="stomp">발구르기 1번</option>
+      <option value="stomp2">발구르기 2번</option>
+    </select>
+    <select class="pattern-select">
+      <option value="clap">손벽 1번</option>
+      <option value="clap2">손벽 2번</option>
+      <option value="stomp">발구르기 1번</option>
+      <option value="stomp2">발구르기 2번</option>
+    </select>
+    <select class="pattern-select">
+      <option value="clap">손벽 1번</option>
+      <option value="clap2">손벽 2번</option>
+      <option value="stomp">발구르기 1번</option>
+      <option value="stomp2">발구르기 2번</option>
+    </select>
+  </div>
+
+  <!-- Icon Display -->
+  <div class="icon-container">
+    <div class="icon" id="icon0">👏</div>
+    <div class="icon" id="icon1">👏</div>
+    <div class="icon" id="icon2">👣</div>
+    <div class="icon" id="icon3">👣</div>
+  </div>
+</div>
+
+<script>
+  let rpm = 60;
+  let isPlaying = false;
+  let currentStep = 0;
+  const pattern = ["clap", "clap", "stomp", "stomp"];
+  const intervalTime = () => (60 / rpm) * 1000;
+
+  // Update RPM value from slider
+  document.getElementById('rpmSlider').addEventListener('input', function () {
+    rpm = this.value;
+    document.getElementById('rpmValue').textContent = rpm;
+  });
+
+  // Play/Stop functionality
+  document.getElementById('playButton').addEventListener('click', function () {
+    isPlaying = !isPlaying;
+    this.textContent = isPlaying ? "정지" : "시작";
+    if (isPlaying) startSequence();
+  });
+
+  // Sequence animation
+  function startSequence() {
+    if (isPlaying) {
+      const icons = document.querySelectorAll('.icon');
+      icons.forEach(icon => icon.classList.remove('active'));
+      icons[currentStep].classList.add('active');
+      currentStep = (currentStep + 1) % pattern.length;
+      setTimeout(startSequence, intervalTime());
+    }
+  }
+
+  // Pattern select update
+  document.querySelectorAll('.pattern-select').forEach((select, index) => {
+    select.addEventListener('change', function () {
+      pattern[index] = this.value;
+    });
+  });
+</script>
+
+</body>
+</html>
